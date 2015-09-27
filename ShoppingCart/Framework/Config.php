@@ -19,6 +19,10 @@ class Config
 
     }
 
+    public function getConfigFolder(){
+        return $this->_configFolder;
+    }
+
     public function setConfigFolder($configFolder){
         if(!$configFolder){
             throw new \Exception("Empty config folder path:");
@@ -27,10 +31,14 @@ class Config
         if($_configFolder != false && is_dir($_configFolder) && is_readable($_configFolder)){
             $this->_configArray = array();
             $this->_configFolder = $_configFolder . DIRECTORY_SEPARATOR;
+//            $ns = $this->app['namespaces'];
+//            if(is_array($ns)){
+//                \Framework\Loader::registerNamespace($ns);
+//            }
         }else{
             throw new \Exception("Config drectory read error:" . $configFolder);
         }
-        echo $this->_configFolder;
+
     }
 
     public function includeConfigFile($path){
@@ -59,7 +67,7 @@ class Config
     }
 
     /**
-     * @return App|null
+     * @return \Framework\Config
      */
     public static function getInstance(){
         if(self::$inst == null){

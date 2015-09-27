@@ -5,13 +5,18 @@ class App{
 
     private static $inst = null;
     private $_config = null;
+
+    /*
+     *
+     * @var \Framework\FrontController
+     */
+
+    private $_frontController = null;
     private function __construct(){
         Loader::registerNamespace('Framework', dirname(__FILE__).DIRECTORY_SEPARATOR);
         Loader::registerAutoLoad();
         $this->_config = \Framework\Config::getInstance();
-        if($this->_config->getConfigFolder() == null){
-            $this->setConfigFolder('../config');
-        }
+
 
     }
 
@@ -31,12 +36,16 @@ class App{
         return $this->_config;
     }
     public function run(){
+
         if($this->_config->getConfigFolder() == null){
             $this->setConfigFolder('../config');
         }
+        $this->_frontController = \Framework\FrontController::getInstance();
+        $this->_frontController->dispatch();
+
     }
     /**
-     * @return App|null
+     * @return \Framework\App
      */
     public static function getInstance(){
         if(self::$inst == null){
