@@ -10,6 +10,6 @@ $cnf['session']['lifetime'] = 3600;
 $cnf['session']['path'] = '/';
 $cnf['session']['domain'] = '';
 $cnf['session']['secure'] = false;
-$cnf['session']['dbConnection'] = 'session';
+$cnf['session']['dbConnection'] = 'default';
 $cnf['session']['dbTable'] = 'sessions';
 return $cnf;

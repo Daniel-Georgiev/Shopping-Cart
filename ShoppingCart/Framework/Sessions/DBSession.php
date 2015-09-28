@@ -45,7 +45,8 @@ class DBSession extends \Framework\DB\SimpleDb implements \Framework\Sessions\IS
 
 
     private function _startNewSession(){
-        $this->sessionId = md5(uniqid('framework', true));
+        $this->sessionId = md5(uniqid('Framework', true));
+        var_dump($this->sessionId);
         $this->prepare('INSERT INTO '.$this->tableName.'(id, valid_until) VALUES(?,?)',
                 array($this->sessionId, (time()+ $this->lifetime)))->execute();
         setcookie($this->sessionName, $this->sessionId, (time() + $this->lifetime), $this->path, $this->domain, $this->secure, true);

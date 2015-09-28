@@ -65,9 +65,9 @@ class FrontController
                 $this->controller=  strtolower($_rc['controllers'][$this->controller]['to']);
             }
         }
-//        $f = $this->ns.'\\'.ucfirst($this->controller);
-//        $newController = new $f();
-//        $newController->{$this->method}();
+        $f = $this->ns.'\\'.ucfirst($this->controller);
+        $newController = new $f();
+        $newController->{$this->method}();
 
     }
 
@@ -92,6 +92,7 @@ class FrontController
         if($controller){
             return strtolower($controller);
         }
+
         return 'Index';
     }
 

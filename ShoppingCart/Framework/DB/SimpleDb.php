@@ -42,6 +42,8 @@ class SimpleDb
         if($params){
             $this->params = $params;
         }
+        var_dump($this->params);
+
         $this->stmt->execute($this->params);
         return $this;
 
