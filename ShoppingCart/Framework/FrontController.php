@@ -17,7 +17,7 @@ class FrontController
 
     }
     public function dispatch(){
-        if($this->router = null){
+        if($this->router == null){
             throw new \Exception("No valid router found", 500);
         }
         $_uri = $this->router->getURI();
@@ -65,9 +65,9 @@ class FrontController
                 $this->controller=  strtolower($_rc['controllers'][$this->controller]['to']);
             }
         }
-        $f = $this->ns.'\\'.ucfirst($this->controller);
-        $newController = new $f();
-        $newController->{$this->method}();
+//        $f = $this->ns.'\\'.ucfirst($this->controller);
+//        $newController = new $f();
+//        $newController->{$this->method}();
 
     }
 

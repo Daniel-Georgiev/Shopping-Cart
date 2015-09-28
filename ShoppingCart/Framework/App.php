@@ -8,19 +8,23 @@ class App
     private static $inst = null;
     private $_config = null;
     private $router = null;
+    private $_dbConnections = [];
+
     /**
- * @return null
- */
-public function getRouter()
-{
-    return $this->router;
-}/**
- * @param null $router
- */
-public function setRouter($router)
-{
-    $this->router = $router;
-}
+     * @return null
+     */
+    public function getRouter()
+    {
+        return $this->router;
+    }
+
+    /**
+     * @param null $router
+     */
+    public function setRouter($router)
+    {
+        $this->router = $router;
+    }
 
     /*
      *
@@ -28,6 +32,7 @@ public function setRouter($router)
      */
 
     private $_frontController = null;
+
     private function __construct()
     {
         Loader::registerNamespace('Framework', dirname(__FILE__) . DIRECTORY_SEPARATOR);
@@ -55,6 +60,7 @@ public function setRouter($router)
     {
         return $this->_config;
     }
+
     public function run()
     {
 
@@ -62,19 +68,45 @@ public function setRouter($router)
             $this->setConfigFolder('../config');
         }
         $this->_frontController = \Framework\FrontController::getInstance();
-    if($this->router instanceof \Framework\Routers\IRouter){
-        $this->_frontController = $this->setRouter($this->router);
-    }
-    else if ($this->router == 'JsonRPCRouter') {
-            $this->_frontController = $this->setRouter(new \Framework\Routers\DefaultRouter());
+
+
+        if ($this->router instanceof \Framework\Routers\IRouter) {
+            $this->_frontController->setRouter($this->router);
+        } else if ($this->router == 'JsonRPCRouter') {
+            //LOAD RPC ROUTER
+            $this->_frontController->setRouter(new \Framework\Routers\DefaultRouter());
         } else if ($this->router == 'CLIRouter') {
-            $this->_frontController = $this->setRouter(new \Framework\Routers\DefaultRouter());
+            //LOAD CLI ROUTER
+            $this->_frontController->setRouter(new \Framework\Routers\DefaultRouter());
         } else {
-            $this->_frontController = $this->setRouter(new \Framework\Routers\DefaultRouter());
+            $this->_frontController->setRouter(new \Framework\Routers\DefaultRouter());
         }
+
         $this->_frontController->dispatch();
 
     }
+
+    public function getConnection($connection = 'default')
+    {
+        if (!$connection) {
+            throw new \Exception("No connection identifier provided", 500);
+        }
+        if ($this->_dbConnections[$connection]) {
+            return $this->_dbConnections[$connection];
+        }
+        $_cnf = $this->getConfig()->database;
+        if (!$_cnf[$connection]) {
+            throw new \Exception("No valid connection identificator is provided", 500);
+        }
+        $dbh = new \PDO($_cnf[$connection]['connection_uri'], $_cnf[$connection]['username'],
+            $_cnf[$connection]['password'], $_cnf[$connection]['pdo_options']);
+
+        $this->_dbConnections[$connection] = $dbh;
+        return $dbh;
+
+
+    }
+
     /**
      * @return \Framework\App
      */
