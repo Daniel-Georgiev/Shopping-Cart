@@ -42,12 +42,35 @@ class InputData
         return array_key_exists($name, $this->_post);
     }
 
+    public function hasCookes($name){
+        return array_key_exists($name, $this->_cookies);
+    }
     public function get($id,$normalize = null, $default = null){
         if($this->hasGet($id)){
             if($normalize!=null){
-                
+                return \Framework\Common::normalize($this->_get[$id], $normalize);
             }
             return $this->_get[$id];
+        }
+        return $default;
+    }
+
+    public function post($name,$normalize = null, $default = null){
+        if($this->hasPost($name)){
+            if($normalize!=null){
+                return \Framework\Common::normalize($this->_post[$name], $normalize);
+            }
+            return $this->_post[$name];
+        }
+        return $default;
+    }
+
+    public function cookies($name,$normalize = null, $default = null){
+        if($this->hasCookes($name)){
+            if($normalize!=null){
+                return \Framework\Common::normalize($this->_cookies[$name], $normalize);
+            }
+            return $this->_cookies[$name];
         }
         return $default;
     }
