@@ -1,5 +1,5 @@
 <?php
-$cnf['default_controller'] = 'Index2';
-$cfn['default_controller'] = 'index3';
+$cnf['default_controller'] = 'Index';
+$cfn['default_method'] = 'index2';
 $cnf['namespaces']['Controllers'] =  'C:\XAMPP\xampp\htdocs\ShoppingCart\ShoppingCart\controllers';
 return $cnf;
