@@ -4,7 +4,7 @@ include '../../Framework/App.php';
 
 $app = \Framework\App::getInstance();
 
-
+$app->setRouter();
 $app->run();
 
 new \Framework\Test();

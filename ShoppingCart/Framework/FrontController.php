@@ -11,12 +11,16 @@ class FrontController
     private $ns = null;
     private $controller = null;
     private $method = null;
+    private $router = null;
+
     private function __construct(){
 
     }
     public function dispatch(){
-        $a = new DefaultRouter();
-        $_uri = $a->getURI();
+        if($this->router = null){
+            throw new \Exception("No valid router found", 500);
+        }
+        $_uri = $this->router->getURI();
         $routes = \Framework\App::getInstance()->getConfig()->routes;
         $_rc = null;
         if(is_array($routes) && count($routes)>0){
@@ -65,6 +69,22 @@ class FrontController
         $newController = new $f();
         $newController->{$this->method}();
 
+    }
+
+    /**
+     * @return null
+     */
+    public function getRouter()
+    {
+        return $this->router;
+    }
+
+    /**
+     * @param null $router
+     */
+    public function setRouter(\Framework\Routers\IRouter $router)
+    {
+        $this->router = $router;
     }
 
     public function getDefaultController(){
