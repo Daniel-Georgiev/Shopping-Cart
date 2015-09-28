@@ -92,9 +92,25 @@ class App
                     $_sess['domain'],
                     $_sess['secure']
                 );
-                $this->setSession($_s);
 
             }
+            else if($_sess['type'] == 'database'){
+                $_s = new \Framework\Sessions\DBSession(
+                  $_sess['dbConnection'],
+                    $_sess['name'],
+                    $_sess['dbTable'],
+                    $_sess['lifetime'],
+                    $_sess['path'],
+                    $_sess['domain'],
+                    $_sess['secure']
+                );
+
+            }
+            else{
+                throw new \Exception("No valid session", 500);
+            }
+            $this->setSession($_s);
+
         }
 
         $this->_frontController->dispatch();
@@ -142,5 +158,11 @@ class App
             self::$inst = new \Framework\App();
         }
         return self::$inst;
+    }
+
+    public function __destruct(){
+        if($this->_session !=null){
+            $this->_session->saveSession();
+        }
     }
 }

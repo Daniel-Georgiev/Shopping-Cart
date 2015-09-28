@@ -4,6 +4,6 @@ include '../../Framework/App.php';
 
 $app = \Framework\App::getInstance();
 $app->run();
-$app->getSession()->counter+=1;
-echo $app->getSession()->counter;
+$app->getSession()->counter2+=1;
+echo $app->getSession()->counter2;
 
