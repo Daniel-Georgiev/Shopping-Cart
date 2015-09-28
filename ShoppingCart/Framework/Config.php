@@ -31,10 +31,10 @@ class Config
         if($_configFolder != false && is_dir($_configFolder) && is_readable($_configFolder)){
             $this->_configArray = array();
             $this->_configFolder = $_configFolder . DIRECTORY_SEPARATOR;
-//            $ns = $this->app['namespaces'];
-//            if(is_array($ns)){
-//                \Framework\Loader::registerNamespace($ns);
-//            }
+            $ns = $this->app['namespaces'];
+            if(is_array($ns)){
+                \Framework\Loader::registerNamespaces($ns);
+            }
         }else{
             throw new \Exception("Config drectory read error:" . $configFolder);
         }

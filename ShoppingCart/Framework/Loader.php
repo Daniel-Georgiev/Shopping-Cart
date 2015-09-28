@@ -50,6 +50,7 @@ final class Loader
     {
         $namespace = trim($namespace);
         if (strlen($namespace) > 0) {
+
             if (!$path) {
                 throw new \Exception("Invalid path");
             }
@@ -62,6 +63,16 @@ final class Loader
             }
         } else {
             throw new \Exception("Invalid namespace:" . $namespace);
+        }
+    }
+
+    public static function registerNamespaces($ar){
+        if(is_array($ar)){
+            foreach($ar as $k=>$v){
+                self::registerNamespace($k,$v);
+            }
+        }else{
+            throw new \Exception("Invalid namespace");
         }
     }
 
