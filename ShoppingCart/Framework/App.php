@@ -9,6 +9,7 @@ class App
     private $_config = null;
     private $router = null;
     private $_dbConnections = [];
+    private $_session = null;
 
     /**
      * @return null
@@ -82,8 +83,33 @@ class App
             $this->_frontController->setRouter(new \Framework\Routers\DefaultRouter());
         }
 
+        $_sess = $this->_config->app['session'];
+        if($_sess['autostart']){
+            if($_sess['type'] == 'native'){
+               $_s =  new \Framework\Sessions\NativeSession($_sess['name'],
+                    $_sess['lifetime'],
+                    $_sess['path'],
+                    $_sess['domain'],
+                    $_sess['secure']
+                );
+                $this->setSession($_s);
+
+            }
+        }
+
         $this->_frontController->dispatch();
 
+    }
+
+    public function setSession(\Framework\Sessions\ISession $session){
+        $this->_session = $session;
+    }
+    /**
+     * @return \Framework\Sessions\ISession
+     */
+    public function getSession()
+    {
+        return $this->_session;
     }
 
     public function getDBConnection($connection = 'default')

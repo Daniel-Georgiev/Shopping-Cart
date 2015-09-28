@@ -4,8 +4,6 @@ include '../../Framework/App.php';
 
 $app = \Framework\App::getInstance();
 $app->run();
+$app->getSession()->counter+=1;
+echo $app->getSession()->counter;
 
-$db = new \Framework\DB\SimpleDb();
-$a = $db->prepare("SELECT * FROM users")->execute()->fetchAllAssoc();
-var_dump($a);
-new \Framework\Test();
