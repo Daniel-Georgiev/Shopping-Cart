@@ -5,5 +5,7 @@ include '../../Framework/App.php';
 $app = \Framework\App::getInstance();
 $app->run();
 
-var_dump($app->getConnection());
+$db = new \Framework\DB\SimpleDb();
+$a = $db->prepare("SELECT * FROM users")->execute()->fetchAllAssoc();
+var_dump($a);
 new \Framework\Test();
