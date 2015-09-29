@@ -9,6 +9,9 @@ class FrontController
 {
     private static $inst = null;
     private $ns = null;
+    /**
+     * @var \Framework\Routers\IRouter
+     */
     private $controller = null;
     private $method = null;
     private $router = null;
@@ -44,12 +47,14 @@ class FrontController
         } else if ($this->ns == null && !$routes['*']['namespace']) {
             throw new \Exception('Default route missing', 500);
         }
-
+        $input = \Framework\InputData::getInstance();
         $_params = explode('/', $_uri);
         if($_params[0]){
             $this->controller= strtolower($_params[0]);
             if($_params[1]){
                 $this->method = strtolower($_params[1]);
+                unset($_params[0],$_params[1]);
+                $input->setGet(array_values($_params));
             }else{
                 $this->method=$this->getDefaultMethod();
             }
@@ -65,6 +70,7 @@ class FrontController
                 $this->controller=  strtolower($_rc['controllers'][$this->controller]['to']);
             }
         }
+        $input->setPost($this->controller->getPost());
         $f = $this->ns.'\\'.ucfirst($this->controller);
         $newController = new $f();
         $newController->{$this->method}();

@@ -7,6 +7,7 @@ class JsonRPCRouter implements \Framework\Routers\IRouter
 {
     private $_map = array();
     private $_requestId;
+    private $_post = array();
     public function __construct() {
         if ($_SERVER['REQUEST_METHOD'] != 'POST' || empty($_SERVER['CONTENT_TYPE']) || $_SERVER['CONTENT_TYPE'] != 'application/json') {
             throw new \Exception('Require json request', 400);
@@ -31,6 +32,7 @@ class JsonRPCRouter implements \Framework\Routers\IRouter
         }else{
             if($this->_map[$request['method']]) {
                 $this->_requestId = $request['id'];
+                $this->_post = $request['params'];
                 return $this->_map[$request['method']];
             }
             else{
@@ -40,5 +42,10 @@ class JsonRPCRouter implements \Framework\Routers\IRouter
     }
     public function getRequestId(){
         return $this->_requestId;
+    }
+
+    public function getPost()
+    {
+        return $this->_post;
     }
 }
