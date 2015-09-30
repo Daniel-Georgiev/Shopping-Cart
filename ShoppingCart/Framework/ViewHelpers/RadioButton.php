@@ -1,9 +1,15 @@
 <?php
-
+/**
+ * Created by PhpStorm.
+ * User: danik
+ * Date: 9/30/2015
+ * Time: 8:24 PM
+ */
 
 namespace Framework\ViewHelpers;
 
-class DropDown
+
+class RadioButton
 {
     private $_attributes = [];
     private $_options = '';
@@ -47,6 +53,5 @@ class DropDown
 
         echo $output;
     }
-
 
 }
