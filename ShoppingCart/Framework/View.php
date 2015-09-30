@@ -77,6 +77,7 @@ class View
             $this->setViewDirectory($this->___viewPath);
         }
         $___fl = $this->___viewDir . str_replace('.', DIRECTORY_SEPARATOR, $file) . $this->___extension;
+
         if(file_exists($___fl) && is_readable($___fl)){
             ob_start();
             include $___fl;

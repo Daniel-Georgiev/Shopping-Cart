@@ -36,9 +36,13 @@ class App
 
     private function __construct()
     {
+        set_exception_handler(array($this,'_exceptionHandler'));
         Loader::registerNamespace('Framework', dirname(__FILE__) . DIRECTORY_SEPARATOR);
         Loader::registerAutoLoad();
         $this->_config = \Framework\Config::getInstance();
+        if($this->_config->getConfigFolder()== null){
+            $this->setConfigFolder('../config');
+        }
 
 
     }
@@ -158,6 +162,28 @@ class App
             self::$inst = new \Framework\App();
         }
         return self::$inst;
+    }
+
+    public function _exceptionHandler(\Exception $ex){
+        if($this->_config && $this->_config->app['displayExceptions'] == true){
+            echo "<pre>". print_r($ex, true) . "</pre>";
+        }else{
+            $this->displayError($ex->getCode());
+        }
+    }
+
+    public function displayError($error){
+        try {
+            $view = \Framework\View::getInstance();
+            $view->display('errors.' . $error);
+
+        } catch(\Exception $ex){
+
+            \Framework\Common::headerStatus($error);
+                echo '<h1>'. $ex. '</h1>';
+            exit;
+
+        }
     }
 
     public function __destruct(){

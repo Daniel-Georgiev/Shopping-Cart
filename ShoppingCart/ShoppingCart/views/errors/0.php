@@ -1,0 +1,1 @@
+kva e taq nula

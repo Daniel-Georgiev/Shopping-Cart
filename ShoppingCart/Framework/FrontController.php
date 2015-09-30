@@ -9,11 +9,11 @@ class FrontController
 {
     private static $inst = null;
     private $ns = null;
+    private $controller = null;
+    private $method = null;
     /**
      * @var \Framework\Routers\IRouter
      */
-    private $controller = null;
-    private $method = null;
     private $router = null;
 
     private function __construct(){
@@ -70,7 +70,7 @@ class FrontController
                 $this->controller=  strtolower($_rc['controllers'][$this->controller]['to']);
             }
         }
-        $input->setPost($this->controller->getPost());
+        $input->setPost($this->router->getPost());
         $f = $this->ns.'\\'.ucfirst($this->controller);
         $newController = new $f();
         $newController->{$this->method}();
