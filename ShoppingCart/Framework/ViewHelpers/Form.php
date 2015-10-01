@@ -13,7 +13,9 @@ class Form
 {
     private $_attributes = [];
     private $_feilds = [];
-    private $_type = '';
+    /**
+     * @var Input[]
+     */
     private $_inputs = [];
     private $_method = '';
 
@@ -26,23 +28,38 @@ class Form
         return $this;
     }
 
-    public function addInput($type){
-        array_push($this->_inputs, $type);
-        return $this;
-    }
-
     public function setMethod($method){
         $this->_method = $method;
         return $this;
     }
+
+    /**
+     * @param $type
+     * @return \Framework\ViewHelpers\Input
+     */
+    public function addInput($type){
+        $this->_inputs[$type] = \Framework\ViewHelpers\Input::create()->setType($type);
+        $this->_inputs[$type]->setParent($this);
+
+        return $this->_inputs[$type];
+    }
+
+    public function addTextArea(){
+        $textArea = TextArea::create();
+        array_push($this->_feilds,$textArea );
+
+        return $textArea;
+    }
+
     public function render(){
         $output = '<form method="' . $this->_method;
+
         foreach($this->_attributes as $key => $value){
             $output.=" " . $key."=".'"'.$value.'"';
         }
         $output.=  '>';
-        foreach($this->_inputs as $inputType){
-            $output.= "\n" .\Framework\ViewHelpers\Input::create()->setType($inputType)->render();
+        foreach($this->_inputs as $input){
+            $output .= $input->render();
         }
         $output .=  \Framework\ViewHelpers\Input::create()->setType('submit')->render();
         $output.= "\n</form>";

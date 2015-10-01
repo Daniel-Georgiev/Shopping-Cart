@@ -14,6 +14,11 @@ class Input
     private $_attributes = [];
     private $_type = '';
 
+    /**
+     * @var Form
+     */
+    private $parent;
+
     public static function create(){
         return new self();
     }
@@ -35,5 +40,18 @@ class Input
         $output.= ">\n";
 
         return $output;
+    }
+
+    public function setParent(Form $parent)
+    {
+        $this->parent = $parent;
+    }
+
+    /**
+     * @return Form
+     */
+    public function getParent()
+    {
+        return $this->parent;
     }
 }
